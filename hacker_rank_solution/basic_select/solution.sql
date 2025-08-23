@@ -41,10 +41,36 @@ SELECT DISTINCT CITY FROM STATION
 WHERE CITY LIKE 'A%' OR CITY LIKE "E%"
 OR CITY LIKE "I%" OR CITY LIKE "O%"
 OR CITY LIKE "U%"
+-- Problem: Same as above but CITY name should not start with vowels
+SELECT DISTINCT CITY FROM STATION
+WHERE LOWER(LEFT (CITY,1)) NOT IN ('a','e','i','o','u')
 
+  
 -- Problem: Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates
 SELECT DISTINCT CITY FROM STATION
 WHERE CITY LIKE "%a" OR CITY LIKE "%e" OR
 CITY LIKE "%i" OR CITY LIKE "%o" OR
 CITY LIKE "%u"
+
+-- Problem: Query the list of CITY names starting and ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates
+-- Concept: LOWER(LEFT(CITY, 1)) IN ('a', 'e', 'i', 'o', 'u')---> LOWER case insensitive, LEFT search from left most side, 
+-- (CITY,1) means only one character in CITY name if it's 4, four letter from the left will be considered , IN() letters to be searched
+  
+SELECT DISTINCT CITY
+FROM STATION
+WHERE
+    LOWER(LEFT(CITY, 1)) IN ('a', 'e', 'i', 'o', 'u')
+    AND
+    LOWER(RIGHT(CITY, 1)) IN ('a', 'e', 'i', 'o', 'u');
+
+
+-- Problem: Query NAME of STUDENT with MARKS > 75
+-- Order them by with last three letter in their names, if they are same
+-- Order by using their ID as secondary
+
+SELECT NAME FROM STUDENTS
+WHERE MARKS > 75
+ORDER BY LOWER(RIGHT(NAME,3)),ID
+
+
   
