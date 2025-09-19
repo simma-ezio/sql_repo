@@ -53,6 +53,33 @@ WHERE LAT_N = (
     WHERE LAT_N < 137.2345);
 
 --MEDIUM LEVEL PROBLEMS
+-- Consider p1(a,b)  and p2(c,d) to be two points on a 2D plane.
+ -- a happens to equal the minimum value in Northern Latitude (LAT_N in STATION).
+ -- b happens to equal the minimum value in Western Longitude (LONG_W in STATION).
+ -- c happens to equal the maximum value in Northern Latitude (LAT_N in STATION).
+ -- d happens to equal the maximum value in Western Longitude (LONG_W in STATION).
+-- Query the Manhattan Distance between points  and  and round it to a scale of  decimal places.
+SELECT ROUND(ABS(MAX(LAT_N)-MIN(LAT_N)) + ABS(MAX(LONG_W)- MIN(LONG_W)),4) FROM Station
+
+-- For same case find the Eucledian norm between the two points
+SELECT ROUND( 
+    SQRT(
+            POWER(MAX(LAT_N)-MIN(LAT_N),2) + POWER(MAX(LONG_W)- MIN(LONG_W),2)
+            )
+                ,4) FROM Station
+
+-- A median is defined as a number separating the higher half of a data set from the lower half.
+-- Query the median of the Northern Latitudes (LAT_N) from STATION and round your answer to  decimal places. 
+-- Concept: WINDOW Function, FLOOR (4.6 = 4 )  CEIL ceiling (4.2 = 5)
+
+SELECT ROUND(AVG(LAT_N), 4) AS median_lat
+FROM (
+    SELECT LAT_N,
+           ROW_NUMBER() OVER (ORDER BY LAT_N) AS rn,
+           COUNT(*) OVER () AS total_rows
+    FROM STATION
+) AS ordered
+WHERE rn IN (FLOOR((total_rows + 1) / 2), CEIL((total_rows + 1) / 2));
 
 
 
